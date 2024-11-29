@@ -1,3 +1,16 @@
+/* Fade in transition for page content */
+.page-container {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .page-container.visible {
+    opacity: 1;
+  }
+
+  .custom-bg{
+    background-color: #FFB200;
+  }
 .footer{
     position: absolute;
     bottom: 0;

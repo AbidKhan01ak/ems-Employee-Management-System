@@ -6,11 +6,13 @@ import { getAllDepartments } from '../services/DepartmentService';
 const ListEmployeeComponent = () => {
     const [employees, setEmployees] = useState([]);
     const [departments, setDepartments] = useState([]);
-
+    const [isVisible, setIsVisible] = useState(false);
     const navigator = useNavigate();
     useEffect( () => {
+        setIsVisible(true);
         getAllEmployees();
         fetchDepartments();
+        return () => setIsVisible(false);
     },[]);
 
     function getAllEmployees(){
@@ -42,7 +44,7 @@ const ListEmployeeComponent = () => {
         }).catch(error => console.log(error));
     }
   return (
-    <div className='container'>
+    <div className={`container page-container ${isVisible ? 'visible' : ''}`}>
         <h2 className='text-center'>List of Employees</h2>
         <button className='btn btn-primary mb-2' onClick={addNewEmployee}>Add Employee</button>
         <table className='table table-striped table-bordered'>
