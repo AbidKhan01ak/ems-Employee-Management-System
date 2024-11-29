@@ -1,6 +1,15 @@
 /* Fade in transition for page content */
+body {
+    background-color: #F0EBE3;
+    min-height: 100vh;  /* Ensure body takes full screen height */
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+
 .page-container {
     opacity: 0;
+    margin-bottom: 150px;
     transition: opacity 0.5s ease-in-out;
   }
   
@@ -11,9 +20,17 @@
   .custom-bg{
     background-color: #FFB200;
   }
+  .btn-bg{
+    color: white;
+    background-color: #FFB200;
+    transition: background-color 0.3s ease, padding 0.3s ease; 
+  }
+  .btn-bg:hover{
+    background-color: #FFEB00;
+    padding: 5px 30px;
+    color: black;
+}
 .footer{
-    position: absolute;
-    bottom: 0;
     width: 100%;
     height: 50px;
     background-color: black;

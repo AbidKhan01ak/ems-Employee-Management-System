@@ -43,7 +43,7 @@ const ListDepartmentComponent = () => {
   return (
     <div className={`container page-container ${isVisible ? 'visible' : ''}`}>
         <h2 className='text-center'>List Of Departments</h2>
-        <Link to= '/add-department' className='btn btn-primary mb-2'>Add Department</Link>
+        <Link to= '/add-department' className='btn btn-bg mb-2'>Add Department</Link>
         <table className='table table-striped table-bordered'>
             <thead>
                 <tr>

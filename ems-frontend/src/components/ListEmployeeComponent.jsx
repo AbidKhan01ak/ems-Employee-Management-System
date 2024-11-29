@@ -46,7 +46,7 @@ const ListEmployeeComponent = () => {
   return (
     <div className={`container page-container ${isVisible ? 'visible' : ''}`}>
         <h2 className='text-center'>List of Employees</h2>
-        <button className='btn btn-primary mb-2' onClick={addNewEmployee}>Add Employee</button>
+        <button className='btn btn-bg mb-2' onClick={addNewEmployee}>Add Employee</button>
         <table className='table table-striped table-bordered'>
             <thead>
                 <tr>
@@ -73,7 +73,7 @@ const ListEmployeeComponent = () => {
                             </td>
                             <td>
                                 <button className='btn btn-info' onClick={() => updateEmployee(employee.id)} style={{marginLeft: '10px'}}>Update</button>
-                                <button className='btn btn-danger' onClick={() => removeEmployee(employee.id)} style={{marginLeft: '10px'}}>Delete</button>
+                                <button className='btn btn-danger' onClick={() => removeEmployee(employee.id)} style={{margin: '10px'}}>Delete</button>
                             </td>
                         </tr>
                     )
