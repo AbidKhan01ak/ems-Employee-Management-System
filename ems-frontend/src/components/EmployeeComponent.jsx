@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { createEmployee, getEmployee, updateEmployee } from '../services/EmployeeService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAllDepartments } from '../services/DepartmentService';
+import { showErrorPopup } from '../utils/showErrorPopup';
 
 const EmployeeComponent = () => {
     const [firstName, setFirstName] = useState('');
@@ -20,8 +21,9 @@ useEffect(() =>{
     getAllDepartments().then(res => {
         setDepartments(res.data);
     }).catch(error => {
-        console.error(error);
+        showErrorPopup("An error occurred while fetching departments.");
     })
+    
 },[])
 
     const {id} = useParams();
@@ -34,7 +36,7 @@ useEffect(() =>{
                 setEmail(response.data.email);
                 setDepartmentId(response.data.departmentId);
             }).catch(error => {
-                console.error(error);
+                showErrorPopup("An error occurred while fetching employee data.");
             })
         }
     },[id]);
@@ -44,17 +46,15 @@ useEffect(() =>{
             const employee = {firstName, lastName, email,departmentId}
             if(id){
                 updateEmployee(id, employee).then((res) => {
-                    console.log(res.data);
                     navigator('/employees');
                 }).catch(error => {
-                    console.error(error);
+                    showErrorPopup("An error occurred while updating employee data.");
                 })
             } else {
                 createEmployee(employee).then((res) => {
-                    console.log(res.data);
                     navigator('/employees')
                 }).catch(error => {
-                    console.error(error);
+                    showErrorPopup("An error occurred while creating employee data.");
                 })
             }            
         }

@@ -1,13 +1,46 @@
 import axios from "axios";
+import { handleError } from '../utils/errorHandler'; // Import handleError from the errorHandler.js utility
 
 const DEPARTMENT_REST_API_BASE_URL = 'http://localhost:8080/api/departments';
 
-export const getAllDepartments = () => axios.get(DEPARTMENT_REST_API_BASE_URL);
+// Get all departments
+export const getAllDepartments = () => {
+    return axios.get(DEPARTMENT_REST_API_BASE_URL)
+        .catch((error) => handleError(error, "Failed to fetch departments"));  // Catch and handle error
+};
 
-export const createDepartment = (department) => axios.post(DEPARTMENT_REST_API_BASE_URL, department);
+// Create a new department
+export const createDepartment = async (department) => {
+    try {
+        return await axios.post(DEPARTMENT_REST_API_BASE_URL, department);
+    } catch (error) {
+        return handleError(error, "Failed to create department");
+    }  // Catch and handle error
+};
 
-export const getDepartmentById = (departmentId) => axios.get(DEPARTMENT_REST_API_BASE_URL + '/' + departmentId);
+// Get a department by ID
+export const getDepartmentById = async (departmentId) => {
+    try {
+        return await axios.get(`${DEPARTMENT_REST_API_BASE_URL}/${departmentId}`);
+    } catch (error) {
+        return handleError(error, "Failed to fetch department by ID");
+    }  // Catch and handle error
+};
 
-export const updateDepartment = (departmentId, department) => axios.put(DEPARTMENT_REST_API_BASE_URL + '/' + departmentId, department);
+// Update a department
+export const updateDepartment = async (departmentId, department) => {
+    try {
+        return await axios.put(`${DEPARTMENT_REST_API_BASE_URL}/${departmentId}`, department);
+    } catch (error) {
+        return handleError(error, "Failed to update department");
+    }  // Catch and handle error
+};
 
-export const deleteDepartment = (departmentId) => axios.delete(DEPARTMENT_REST_API_BASE_URL + '/' + departmentId);
+// Delete a department
+export const deleteDepartment = async (departmentId) => {
+    try {
+        return await axios.delete(`${DEPARTMENT_REST_API_BASE_URL}/${departmentId}`);
+    } catch (error) {
+        return handleError(error, "Cannot delete department with assigned employees. Reassign or remove employees first");
+    }
+};

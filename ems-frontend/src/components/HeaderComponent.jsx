@@ -3,13 +3,7 @@ import { NavLink } from 'react-router-dom';
 import '../styles/HeaderComponent.css'; 
 
 export const HeaderComponent = () => {
-  const [darkMode, setDarkMode] = useState(false);
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.body.classList.toggle('dark-mode');
-  };
-
+  
   return (
     <header>
       <nav className="navbar navbar-expand-lg navbar-dark custom-bg shadow sticky-top">
@@ -56,15 +50,6 @@ export const HeaderComponent = () => {
                 >
                   Departments
                 </NavLink>
-              </li>
-              {/* Dark Mode Toggle */}
-              <li className="nav-item">
-                <button
-                  className="btn btn-outline-light ms-3"
-                  onClick={toggleDarkMode}
-                >
-                  {darkMode ? 'Light Mode' : 'Dark Mode'}
-                </button>
               </li>
             </ul>
           </div>

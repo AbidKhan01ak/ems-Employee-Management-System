@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { deleteEmployee, listEmployees } from '../services/EmployeeService';
 import { useNavigate } from 'react-router-dom';
 import { getAllDepartments } from '../services/DepartmentService';
+import { showErrorPopup } from '../utils/showErrorPopup';
 
 const ListEmployeeComponent = () => {
     const [employees, setEmployees] = useState([]);
@@ -19,7 +20,7 @@ const ListEmployeeComponent = () => {
         listEmployees().then((response) => {
             setEmployees(response.data);
         }).catch(error => {
-            console.error(error);
+            showErrorPopup("An unexpected error occured while fetching employees");
         })
     }
 
@@ -28,7 +29,9 @@ const ListEmployeeComponent = () => {
             .then(response => {
                 setDepartments(response.data);
             })
-            .catch(error => console.error(error));
+            .catch(error => {
+                showErrorPopup("An unexpected error occured while fetching employees");
+            });
     }
 
     function addNewEmployee(){
@@ -38,10 +41,11 @@ const ListEmployeeComponent = () => {
         navigator(`/edit-employee/${id}`);
     }
     function removeEmployee(id){
-        console.log(id);
         deleteEmployee(id).then((response) => {
             getAllEmployees();
-        }).catch(error => console.log(error));
+        }).catch(error => {
+            showErrorPopup("An unexpected error deleting the employee")
+        });
     }
   return (
     <div className={`container page-container ${isVisible ? 'visible' : ''}`}>

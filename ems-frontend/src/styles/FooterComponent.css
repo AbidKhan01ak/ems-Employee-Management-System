@@ -1,11 +1,12 @@
 /* FooterComponent.css */
 .footer {
-    background-color: #FFB200; /* Customize footer background color */
+    background-color: #FFB200;
+    padding: 20px;
   }
   
   .social-icons {
     display: flex;
-    justify-content: flex-end;  /* Align the icons to the right */
+    justify-content: flex-end;  
   }
   
   .social-icon {
@@ -14,6 +15,6 @@
   }
   
   .social-icon:hover {
-    transform: scale(1.1); /* Slightly increase size on hover */
+    transform: scale(1.1);
   }
   

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { deleteDepartment, getAllDepartments } from '../services/DepartmentService';
 import { Link, useNavigate } from 'react-router-dom';
+import { showErrorPopup } from '../utils/showErrorPopup';
 
 const ListDepartmentComponent = () => {
     
@@ -15,10 +16,9 @@ const ListDepartmentComponent = () => {
     },[]);
     function listOfDepartments(){
         getAllDepartments().then((response) => {
-            console.log(response.data);
             setDepartments(response.data);
         }).catch(error => {
-            console.error(error);
+            showErrorPopup("An unexpected error occurred! unable to fetch the departments");
         })
     }
     function updateDepartment(id){
@@ -27,15 +27,14 @@ const ListDepartmentComponent = () => {
 
     function removeDepartment(id){
         deleteDepartment(id).then((response) => {
-            console.log(response.data);
             listOfDepartments();
         }).catch(error => {
             if (error.response && error.response.status === 400) {
-                alert(error.response.data); // Show error message for linked employees
+                showErrorPopup(`Department have employees! Please remove the Employees before deleting the ${response.data.id} Department`); 
             } else if (error.response && error.response.status === 404) {
-                alert("Department not found!"); // Handle not found errors
+                showErrorPopup(`Department does not exists!`);
             } else {
-                console.error("An unexpected error occurred", error);
+                showErrorPopup("An unexpected error occurred");
             }
         });
     }

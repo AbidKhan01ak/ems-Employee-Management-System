@@ -1,31 +1,43 @@
-/* Fade in transition for page content */
+/* App.css */
 body {
-    background-color: #F0EBE3;
-    min-height: 100vh;  /* Ensure body takes full screen height */
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-  }
+  background-color: #F0EBE3;
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+  
+body.dark-mode .navbar {
+  background-color: #1e1e1e;
+}
+  
+body.dark-mode .footer {
+  background-color: #1e1e1e;
+}
 
 .page-container {
     opacity: 0;
     margin-bottom: 150px;
     transition: opacity 0.5s ease-in-out;
-  }
+}
   
-  .page-container.visible {
+.page-container.visible {
     opacity: 1;
-  }
+}
 
-  .custom-bg{
+.custom-bg{
     background-color: #FFB200;
-  }
-  .btn-bg{
+}
+.btn-bg{
     color: white;
     background-color: #FFB200;
     transition: background-color 0.3s ease, padding 0.3s ease; 
-  }
-  .btn-bg:hover{
+}
+.btn-bg:hover{
     background-color: #FFEB00;
     padding: 5px 30px;
     color: black;
@@ -36,4 +48,20 @@ body {
     background-color: black;
     text-align: center;
     color: white;
+}
+
+.error-popup {
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  z-index: 10000;  
+  font-size: 16px;
+  max-width: 400px;
+  word-wrap: break-word;
 }

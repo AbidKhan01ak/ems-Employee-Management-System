@@ -1,48 +1,37 @@
-/* Dark Mode */
-body.dark-mode {
-  background-color: #121212;
-  color: #e0e0e0;
-}
+/* HeaderComponent.css */
 
-body.dark-mode .navbar {
-  background-color: #1e1e1e;
-}
-
-body.dark-mode .footer {
-  background-color: #1e1e1e;
-}
-
-/* Highlight Active Page */
 .active-page {
   font-weight: bold;
-  text-decoration: none; /* Remove underline if it's conflicting */
+  text-decoration: none; 
   color: #FFFFFF !important; 
-  transition: background-color 0.3s ease, padding 0.3s ease, border-radius 0.3s ease, color 0.3s ease; /* Adding transition to color as well */
-  padding: 10px 30px; /* Default padding */
+  transition: background-color 0.3s ease, padding 0.3s ease, border-radius 0.3s ease, color 0.3s ease; 
+  padding: 10px 30px; 
 }
 
-/* Active Page Background in Light Mode */
 body:not(.dark-mode) .active-page {
   background-color: #1e1e1e !important;
 }
 
-/* Active Page Background in Dark Mode */
 body.dark-mode .active-page {
   background-color: #FFB200 !important;
 }
 
-/* Navbar Link Styling */
 .navbar .nav-link {
   color: #FFFFFF; 
   border-radius: 50px;
+  transition: all 0.3s ease-in-out;
 }
 
 .navbar .nav-link:hover {
-  background-color: #FFB200; /* Ensure hover color does not mix */
+  background-color: #FFB200; 
   color: #FFFFFF;
+  padding: 12px 25px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  transform: scale(1.02); 
 }
 
 .navbar .nav-link:active {
-  background-color: #FFB200; /* Ensure active link stays with distinct background */
+  background-color: #FFB200; 
   color: #FFFFFF;
+  transform: scale(1);
 }

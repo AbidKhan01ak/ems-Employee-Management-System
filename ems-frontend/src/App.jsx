@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import ListEmployeeComponent from './components/ListEmployeeComponent'
 import { HeaderComponent } from './components/HeaderComponent'
@@ -7,11 +7,38 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import EmployeeComponent from './components/EmployeeComponent'
 import ListDepartmentComponent from './components/ListDepartmentComponent'
 import DepartmentComponent from './components/DepartmentComponent'
-function App() {
+import Switch from './utils/Switch';
 
+function App() {
+  const [darkMode, setDarkMode] = useState(null);
+
+  useEffect(() => {
+    const savedMode = localStorage.getItem('darkMode') === 'true';
+    setDarkMode(savedMode);
+    if(savedMode) document.body.classList.add('dark-mode');
+  },[]);
+  
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(!darkMode);
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', newMode);
+  };
+  if (darkMode === null) {
+    return null; 
+  }
   return (
     <>
     <BrowserRouter>
+    <div
+      style={{position: 'absolute', top: '10%', right: '2%', zIndex: 1000,}}>
+        <Switch 
+        isOn={darkMode} 
+        handleToggle={toggleDarkMode}
+        colorOne= "#FFEB00"
+        colorTwo="#000000"
+        />
+    </div>
       <HeaderComponent/>
       <Routes>
         <Route path='/' element={ <ListEmployeeComponent/> }></Route>
