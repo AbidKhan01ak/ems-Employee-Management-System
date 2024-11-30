@@ -37,7 +37,7 @@ export const HeaderComponent = () => {
                     `nav-link fw-semibold ${isActive ? 'active-page' : 'text-white'}
                   `}
                   to="/employees"
-                >
+                ><img src='/employee.svg' alt='Employees'/>
                   Employees
                 </NavLink>
               </li>
@@ -47,7 +47,7 @@ export const HeaderComponent = () => {
                     `nav-link fw-semibold ${isActive ? 'active-page' : 'text-white'}
                   `}
                   to="/departments"
-                >
+                ><img src='/departments.png' alt='Departments'/>
                   Departments
                 </NavLink>
               </li>
