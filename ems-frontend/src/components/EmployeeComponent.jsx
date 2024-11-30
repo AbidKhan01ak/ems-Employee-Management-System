@@ -3,31 +3,28 @@ import { createEmployee, getEmployee, updateEmployee } from '../services/Employe
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAllDepartments } from '../services/DepartmentService';
 import { showErrorPopup } from '../utils/showErrorPopup';
-
+import { pageTitle } from '../utils/pageTitle';
+import { validateForm } from '../utils/validateForm';
 const EmployeeComponent = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
-    const [errors, setErrors] = useState({
-        firstName:'',
-        lastName:'',
-        email:'',
-        department:''
-    });
+    const [errors, setErrors] = useState({});
     const [departmentId, setDepartmentId] = useState('');
     const [departments, setDepartments] = useState([]);
-
-useEffect(() =>{
-    getAllDepartments().then(res => {
-        setDepartments(res.data);
-    }).catch(error => {
-        showErrorPopup("An error occurred while fetching departments.");
-    })
     
-},[])
-
     const {id} = useParams();
     const navigator = useNavigate();
+
+    useEffect(() =>{
+        getAllDepartments().then(res => {
+            setDepartments(res.data);
+        }).catch(error => {
+            showErrorPopup("An error occurred while fetching departments.");
+        })
+    
+    },[])
+
     useEffect(()=>{
         if(id){
             getEmployee(id).then((response) => {
@@ -39,10 +36,17 @@ useEffect(() =>{
                 showErrorPopup("An error occurred while fetching employee data.");
             })
         }
-    },[id]);
+    },[id]);    
     function saveOrUpdateEmployee(e) {
         e.preventDefault();
-        if(validateForm()){
+        const fields = { firstName, lastName, email, departmentId };
+        const rules = {
+            firstName: { required: true, errorMessage: 'First Name is required' },
+            lastName: { required: true, errorMessage: 'Last Name is required' },
+            email: { required: true, errorMessage: 'Email is required' },
+            departmentId: { required: true, errorMessage: 'Select a Department' },
+        };
+        if(validateForm(fields, rules, setErrors)){
             const employee = {firstName, lastName, email,departmentId}
             if(id){
                 updateEmployee(id, employee).then((res) => {
@@ -60,55 +64,14 @@ useEffect(() =>{
         }
         
     }
-    function validateForm(){
-        let valid = true;
-        const errorsCopy = {... errors};
-
-        if(firstName.trim()){
-            errorsCopy.firstName = '';
-        }else {
-            errorsCopy.firstName = 'First Name is required';
-            valid = false;
-        }
-        if(lastName.trim()){
-            errorsCopy.lastName = '';
-        }else {
-            errorsCopy.lastName = 'Last Name is required';
-            valid = false;
-        }
-
-        if(email.trim()){
-            errorsCopy.email = '';
-        }else {
-            errorsCopy.email = 'Email is required';
-            valid = false;
-        }
-        if(departmentId){
-            errorsCopy.department = '';
-        }else {
-            errorsCopy.department = 'Select Department';
-            valid = false;
-        }
-
-        setErrors(errorsCopy);
-
-        return valid;
-    }
     
-    function pageTitle(){
-        if(id){
-            return <h2 className='text-center'>Update Employee</h2>
-        }else{
-           return  <h2 className='text-center'>Add Employee</h2>
-        }
-    }
   return (
     <div className='container'>
         <br/> <br/>
         <div className='row'>
             <div className='card col-md-6 offset-md-3 offset-md-3'>
-                {pageTitle()}
-                <div className='card-body'>
+                {pageTitle('Employee', id)}
+                <div className='card-body mx-4 my-4'>
                     <form>
                         <div className='form-group mb-2'>
                             <label className='form-label'>First Name:</label>

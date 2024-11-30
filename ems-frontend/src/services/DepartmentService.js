@@ -4,9 +4,12 @@ import { handleError } from '../utils/errorHandler'; // Import handleError from 
 const DEPARTMENT_REST_API_BASE_URL = 'http://localhost:8080/api/departments';
 
 // Get all departments
-export const getAllDepartments = () => {
-    return axios.get(DEPARTMENT_REST_API_BASE_URL)
-        .catch((error) => handleError(error, "Failed to fetch departments"));  // Catch and handle error
+export const getAllDepartments = async () => {
+    try {
+        return await axios.get(DEPARTMENT_REST_API_BASE_URL);
+    } catch (error) {
+        return handleError(error, "Failed to fetch departments");
+    }  // Catch and handle error
 };
 
 // Create a new department
