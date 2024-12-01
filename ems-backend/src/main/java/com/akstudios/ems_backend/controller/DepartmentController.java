@@ -20,9 +20,6 @@ public class DepartmentController {
     //build create or add department REST Api
     @PostMapping
     public ResponseEntity<DepartmentDto> createDepartment(@RequestBody DepartmentDto departmentDto){
-        if (departmentDto.getId() != null) {
-            throw new IllegalArgumentException("ID should not be provided when creating a new department.");
-        }
         DepartmentDto department = departmentService.createDepartment(departmentDto);
         return new ResponseEntity<>(department, HttpStatus.CREATED);
     }

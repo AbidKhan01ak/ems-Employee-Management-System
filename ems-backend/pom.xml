@@ -56,5 +56,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>ems-manager-app</finalName>
 	</build>
 </project>
