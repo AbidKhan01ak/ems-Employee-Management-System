@@ -1,23 +1,38 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { deleteDepartment, getAllDepartments } from '../services/DepartmentService';
 import { Link, useNavigate } from 'react-router-dom';
 import { showErrorPopup } from '../utils/showErrorPopup';
 
+const initialState ={
+    departments:[],
+    isVisible:false,
+};
+
+function reducer(state, action){
+    switch(action.type){
+        case 'SET_DEPARTMENTS':
+            return { ...state, departments: action.departments };
+        case 'SET_VISIBILITY':
+            return { ...state, isVisible: action.isVisible };
+        default:
+            return state;
+    }
+}
 const ListDepartmentComponent = () => {
     
-    const [departments, setDepartments] = useState([]);
-    const [isVisible, setIsVisible] = useState(false);
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const { departments, isVisible } = state;
     const navigator = useNavigate();
     
     useEffect(() => {
-        setIsVisible(true);
+        dispatch({ type: 'SET_VISIBILITY', isVisible: true });
         listOfDepartments();
-        return () => setIsVisible(false);
+        return () => dispatch({ type: 'SET_VISIBILITY', isVisible: false });
     },[]);
     function listOfDepartments(){
         getAllDepartments().then((response) => {
-            setDepartments(response.data);
-        }).catch(error => {
+            dispatch({ type: 'SET_DEPARTMENTS', departments: response.data });
+        }).catch(() => {
             showErrorPopup("An unexpected error occurred! unable to fetch the departments");
         })
     }
@@ -26,7 +41,7 @@ const ListDepartmentComponent = () => {
     }
 
     function removeDepartment(id){
-        deleteDepartment(id).then((response) => {
+        deleteDepartment(id).then(() => {
             listOfDepartments();
         }).catch(error => {
             if (error.response && error.response.status === 400) {

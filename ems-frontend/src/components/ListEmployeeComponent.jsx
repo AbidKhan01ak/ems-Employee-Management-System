@@ -1,25 +1,43 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useReducer } from 'react'
 import { deleteEmployee, listEmployees } from '../services/EmployeeService';
 import { useNavigate } from 'react-router-dom';
 import { getAllDepartments } from '../services/DepartmentService';
 import { showErrorPopup } from '../utils/showErrorPopup';
 
+const initialState ={
+    employees:[],
+    departments:[],
+    isVisible: false,
+};
+
+function reducer(state, action){
+    switch(action.type){
+        case 'SET_EMPLOYEES':
+            return {...state, employees: action.employees};
+        case 'SET_DEPARTMENTS':
+            return { ...state, departments: action.departments };
+        case 'SET_VISIBILITY':
+            return { ...state, isVisible: action.isVisible };
+        default:
+            return state;
+    }
+}
+
 const ListEmployeeComponent = () => {
-    const [employees, setEmployees] = useState([]);
-    const [departments, setDepartments] = useState([]);
-    const [isVisible, setIsVisible] = useState(false);
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const { employees, departments, isVisible } = state;
     const navigator = useNavigate();
     useEffect( () => {
-        setIsVisible(true);
+        dispatch({ type: 'SET_VISIBILITY', isVisible: true });
         getAllEmployees();
         fetchDepartments();
-        return () => setIsVisible(false);
+        return () => dispatch({ type: 'SET_VISIBILITY', isVisible: false });
     },[]);
 
     function getAllEmployees(){
         listEmployees().then((response) => {
-            setEmployees(response.data);
-        }).catch(error => {
+            dispatch({ type: 'SET_EMPLOYEES', employees: response.data });
+        }).catch(() => {
             showErrorPopup("An unexpected error occured while fetching employees");
         })
     }
@@ -27,9 +45,9 @@ const ListEmployeeComponent = () => {
     function fetchDepartments() {
         getAllDepartments()
             .then(response => {
-                setDepartments(response.data);
+                dispatch({ type: 'SET_DEPARTMENTS', departments: response.data });
             })
-            .catch(error => {
+            .catch(() => {
                 showErrorPopup("An unexpected error occured while fetching employees");
             });
     }
@@ -41,9 +59,9 @@ const ListEmployeeComponent = () => {
         navigator(`/edit-employee/${id}`);
     }
     function removeEmployee(id){
-        deleteEmployee(id).then((response) => {
+        deleteEmployee(id).then(() => {
             getAllEmployees();
-        }).catch(error => {
+        }).catch(() => {
             showErrorPopup("An unexpected error deleting the employee")
         });
     }
@@ -65,7 +83,7 @@ const ListEmployeeComponent = () => {
             </thead>
             <tbody>
                 {
-                    employees.map(employee => 
+                    employees.map((employee) => 
                         <tr key={employee.id}>
                             <td>{employee.id}</td>
                             <td>{employee.firstName}</td>

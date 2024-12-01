@@ -1,25 +1,45 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect,useReducer } from 'react'
 import { createEmployee, getEmployee, updateEmployee } from '../services/EmployeeService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAllDepartments } from '../services/DepartmentService';
 import { showErrorPopup } from '../utils/showErrorPopup';
 import { pageTitle } from '../utils/pageTitle';
 import { validateForm } from '../utils/validateForm';
+
+const initialState ={
+    firstName : '',
+    lastName : '',
+    email : '',
+    departmentId : '',
+    departments : [],
+    errors : {},
+}
+
+function reducer(state, action){
+    switch(action.type){
+        case 'SET_FIELD':
+            return {...state, [action.field]:action.value};
+        case 'SET_ERRORS':
+            return {...state, errors: action.errors};
+        case 'SET_FORM':
+            return {...state, ...action.formData};
+        case 'SET_DEPARTMENTS':
+            return {...state, departments: action.departments};
+        default:
+            return false;    
+    }
+}
 const EmployeeComponent = () => {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [errors, setErrors] = useState({});
-    const [departmentId, setDepartmentId] = useState('');
-    const [departments, setDepartments] = useState([]);
-    
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const {firstName, lastName, email, departmentId, departments, errors} = state;
+        
     const {id} = useParams();
     const navigator = useNavigate();
 
     useEffect(() =>{
         getAllDepartments().then(res => {
-            setDepartments(res.data);
-        }).catch(error => {
+            dispatch({type: 'SET_DEPARTMENTS', departments: res.data});
+        }).catch(() => {
             showErrorPopup("An error occurred while fetching departments.");
         })
     
@@ -28,11 +48,16 @@ const EmployeeComponent = () => {
     useEffect(()=>{
         if(id){
             getEmployee(id).then((response) => {
-                setFirstName(response.data.firstName);
-                setLastName(response.data.lastName);
-                setEmail(response.data.email);
-                setDepartmentId(response.data.departmentId);
-            }).catch(error => {
+                dispatch({
+                    type: 'SET_FORM',
+                    formData : {
+                        firstName: response.data.firstName,
+                        lastName: response.data.lastName,
+                        email:response.data.email,
+                        departmentId:response.data.departmentId,
+                    },
+                });
+            }).catch(() => {
                 showErrorPopup("An error occurred while fetching employee data.");
             })
         }
@@ -46,18 +71,21 @@ const EmployeeComponent = () => {
             email: { required: true, errorMessage: 'Email is required' },
             departmentId: { required: true, errorMessage: 'Select a Department' },
         };
-        if(validateForm(fields, rules, setErrors)){
+        if(validateForm(fields, rules, (validateErrors) => 
+            dispatch({type: 'SET_ERRORS', errors: validateErrors})
+            )
+        ){
             const employee = {firstName, lastName, email,departmentId}
             if(id){
-                updateEmployee(id, employee).then((res) => {
+                updateEmployee(id, employee).then(() => {
                     navigator('/employees');
-                }).catch(error => {
+                }).catch(() => {
                     showErrorPopup("An error occurred while updating employee data.");
                 })
             } else {
-                createEmployee(employee).then((res) => {
+                createEmployee(employee).then(() => {
                     navigator('/employees')
-                }).catch(error => {
+                }).catch(() => {
                     showErrorPopup("An error occurred while creating employee data.");
                 })
             }            
@@ -81,7 +109,7 @@ const EmployeeComponent = () => {
                                 name='firstName'
                                 value={firstName}
                                 className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
-                                onChange={(e) => setFirstName(e.target.value)}
+                                onChange={(e) => dispatch({type: 'SET_FIELD', field: 'firstName', value:e.target.value})}
                             />
                             {errors.firstName && <div className='invalid-feeback'>{errors.firstName}</div>}
                         </div>
@@ -93,7 +121,7 @@ const EmployeeComponent = () => {
                                 name='lastName'
                                 value={lastName}
                                 className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
-                                onChange={(e) => setLastName(e.target.value)}
+                                onChange={(e) => dispatch({type: 'SET_FIELD', field: 'lastName', value:e.target.value})}
                             />
                             {errors.lastName && <div className='invalid-feeback'>{errors.lastName}</div>}
                         </div>
@@ -105,7 +133,7 @@ const EmployeeComponent = () => {
                                 name='email'
                                 value={email}
                                 className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={(e) => dispatch({type: 'SET_FIELD', field: 'email', value:e.target.value})}
                             />
                             {errors.email && <div className='invalid-feeback'>{errors.email}</div>}
                         </div>
@@ -113,7 +141,7 @@ const EmployeeComponent = () => {
                             <label className='form-label'>Select Department:</label>
                             <select className={`form-control ${errors.department ? 'is-invalid' : ''}`}
                             value={departmentId} 
-                            onChange={(e) => setDepartmentId(e.target.value)}>
+                            onChange={(e) => dispatch({type: 'SET_FIELD', field: 'departmentId', value:e.target.value})}>
                                 <option value="Select Department">Select Department</option>
                                 {
                                     departments.map((department) =>
