@@ -1,14 +1,25 @@
 package com.akstudios.ems_backend.controller;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.akstudios.ems_backend.dto.DepartmentDto;
 import com.akstudios.ems_backend.exception.ResourceNotFoundException;
 import com.akstudios.ems_backend.service.DepartmentService;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
+
 @CrossOrigin("*")
 @AllArgsConstructor
 @RestController
@@ -19,21 +30,21 @@ public class DepartmentController {
 
     //build create or add department REST Api
     @PostMapping
-    public ResponseEntity<DepartmentDto> createDepartment(@RequestBody DepartmentDto departmentDto){
+    public ResponseEntity<DepartmentDto> createDepartment(@RequestBody DepartmentDto departmentDto) {
         DepartmentDto department = departmentService.createDepartment(departmentDto);
         return new ResponseEntity<>(department, HttpStatus.CREATED);
     }
 
     //build get department REST Api
     @GetMapping("{id}")
-    public ResponseEntity<DepartmentDto> getDepartmentById(@PathVariable("id") Long departmentId){
+    public ResponseEntity<DepartmentDto> getDepartmentById(@PathVariable("id") Long departmentId) {
         DepartmentDto departmentDto = departmentService.getDepartmentById(departmentId);
         return ResponseEntity.ok(departmentDto);
     }
 
     //build get All Department REST APi
     @GetMapping
-    public ResponseEntity<List<DepartmentDto>> getAllDepartments(){
+    public ResponseEntity<List<DepartmentDto>> getAllDepartments() {
         List<DepartmentDto> departments = departmentService.getAllDepartments();
 
         return ResponseEntity.ok(departments);
@@ -42,14 +53,14 @@ public class DepartmentController {
     //Build Update department REST Api
     @PutMapping("{id}")
     public ResponseEntity<DepartmentDto> updateDepartment(@PathVariable("id") Long departmentId,
-                                                          @RequestBody DepartmentDto updateDepartment){
+            @RequestBody DepartmentDto updateDepartment) {
         DepartmentDto department = departmentService.updateDepartment(departmentId, updateDepartment);
         return ResponseEntity.ok(department);
     }
 
     //build Delete Department REST Api
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteDepartment(@PathVariable("id") Long departmentId){
+    public ResponseEntity<String> deleteDepartment(@PathVariable("id") Long departmentId) {
         try {
             departmentService.deleteDepartment(departmentId);
             return ResponseEntity.ok("Department deleted successfully!");

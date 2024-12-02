@@ -1,5 +1,10 @@
 package com.akstudios.ems_backend.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import com.akstudios.ems_backend.dto.DepartmentDto;
 import com.akstudios.ems_backend.entity.Department;
 import com.akstudios.ems_backend.entity.Employee;
@@ -8,11 +13,8 @@ import com.akstudios.ems_backend.mapper.DepartmentMapper;
 import com.akstudios.ems_backend.repository.DepartmentRepository;
 import com.akstudios.ems_backend.repository.EmployeeRepository;
 import com.akstudios.ems_backend.service.DepartmentService;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor

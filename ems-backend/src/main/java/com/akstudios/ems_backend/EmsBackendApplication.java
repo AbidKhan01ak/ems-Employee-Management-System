@@ -1,16 +1,14 @@
 package com.akstudios.ems_backend;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 
-import java.util.Objects;
-
-@SpringBootApplication
+@SpringBootApplication(exclude = {UserDetailsServiceAutoConfiguration.class})
 public class EmsBackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(EmsBackendApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(EmsBackendApplication.class, args);
+    }
 
 }
