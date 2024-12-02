@@ -10,6 +10,8 @@ const initialState ={
     firstName : '',
     lastName : '',
     email : '',
+    role:'',
+    salary:0,
     departmentId : '',
     departments : [],
     errors : {},
@@ -31,7 +33,7 @@ function reducer(state, action){
 }
 const EmployeeComponent = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    const {firstName, lastName, email, departmentId, departments, errors} = state;
+    const {firstName, lastName, email,role, salary, departmentId, departments, errors} = state;
         
     const {id} = useParams();
     const navigator = useNavigate();
@@ -54,6 +56,8 @@ const EmployeeComponent = () => {
                         firstName: response.data.firstName,
                         lastName: response.data.lastName,
                         email:response.data.email,
+                        role: response.data.role,
+                        salary: response.data.salary,
                         departmentId:response.data.departmentId,
                     },
                 });
@@ -64,18 +68,20 @@ const EmployeeComponent = () => {
     },[id]);    
     function saveOrUpdateEmployee(e) {
         e.preventDefault();
-        const fields = { firstName, lastName, email, departmentId };
+        const fields = { firstName, lastName, email,role, salary, departmentId };
         const rules = {
             firstName: { required: true, errorMessage: 'First Name is required' },
             lastName: { required: true, errorMessage: 'Last Name is required' },
             email: { required: true, errorMessage: 'Email is required' },
             departmentId: { required: true, errorMessage: 'Select a Department' },
+            role: { required: true, errorMessage: 'Enter the Role' },
+            salary: { required: true, errorMessage: 'Salary required' },
         };
         if(validateForm(fields, rules, (validateErrors) => 
             dispatch({type: 'SET_ERRORS', errors: validateErrors})
             )
         ){
-            const employee = {firstName, lastName, email,departmentId}
+            const employee = {firstName, lastName, email,role, salary, departmentId}
             if(id){
                 updateEmployee(id, employee).then(() => {
                     navigator('/employees');
@@ -136,6 +142,28 @@ const EmployeeComponent = () => {
                                 onChange={(e) => dispatch({type: 'SET_FIELD', field: 'email', value:e.target.value})}
                             />
                             {errors.email && <div className='invalid-feeback'>{errors.email}</div>}
+                        </div>
+                        <div className='form-group mb-2'>
+                            <label className='form-label'>Role:</label>
+                            <input
+                                type='text'
+                                placeholder='Employee Role'
+                                value={role}
+                                className={`form-control ${errors.role ? 'is-invalid' : ''}`}
+                                onChange={(e) => dispatch({type: 'SET_FIELD', field: 'role', value:e.target.value})}
+                            />
+                            {errors.role && <div className='invalid-feeback'>{errors.role}</div>}
+                        </div>
+                        <div className='form-group mb-2'>
+                            <label className='form-label'>Salary:</label>
+                            <input
+                                type='text'
+                                placeholder='Employee salary'
+                                value={salary}
+                                className={`form-control ${errors.salary ? 'is-invalid' : ''}`}
+                                onChange={(e) => dispatch({type: 'SET_FIELD', field: 'salary', value:e.target.value})}
+                            />
+                            {errors.salary && <div className='invalid-feeback'>{errors.salary}</div>}
                         </div>
                         <div className='form-group mb-2'>
                             <label className='form-label'>Select Department:</label>

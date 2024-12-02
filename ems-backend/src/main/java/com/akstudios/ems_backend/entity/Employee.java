@@ -24,9 +24,14 @@ public class Employee {
     @Column(name = "email_id", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "role", nullable = false)
+    private String role;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
+
+    @Column(name = "salary")
+    private Double salary;
 
 
 }

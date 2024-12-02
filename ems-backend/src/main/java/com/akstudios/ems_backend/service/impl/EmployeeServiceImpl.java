@@ -63,6 +63,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setFirstName(updatedEmployee.getFirstName());
         employee.setLastName(updatedEmployee.getLastName());
         employee.setEmail(updatedEmployee.getEmail());
+        employee.setRole(updatedEmployee.getRole());
+        employee.setSalary(updatedEmployee.getSalary());
         Department department = departmentRepository.findById(updatedEmployee.getDepartmentId())
                 .orElseThrow(
                         () -> new ResourceNotFoundException("Department does not exists with id: " + updatedEmployee.getDepartmentId())
