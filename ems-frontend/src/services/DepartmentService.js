@@ -1,8 +1,7 @@
 import axios from "axios";
 import { handleError } from '../utils/errorHandler';
+const DEPARTMENT_REST_API_BASE_URL = 'http://localhost:8080/api/departments';
 
-const DEPARTMENT_REST_API_BASE_URL = 'http://ec2-43-204-236-139.ap-south-1.compute.amazonaws.com:8080/api/departments';
-// const DEPARTMENT_REST_API_BASE_URL = 'http://localhost:8080/api/departments';
 
 // Get all departments
 export const getAllDepartments = async () => {
